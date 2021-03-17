@@ -1,17 +1,19 @@
-name: CI
+name: deploy
+
 on:
-push:
-branches:
-- master
+  push:
+    branches: [ main ]
 
 jobs:
-build:
-runs-on: macOS-latest
+  build:
+    runs-on: macos-latest
 
-steps:
-- uses: actions/checkout@v1
-- name: Publish to CocoaPod register
-env:
-COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-run: |
- pod trunk push <YOURLIBRARY>.podspec
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+        
+      - name: Publish to CocoaPod register
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          pod trunk push PodReleaseUsingGA.podspec
